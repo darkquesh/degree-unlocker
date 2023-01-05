@@ -1,5 +1,3 @@
-// Politechnika Warszawska
-// EADS Test-1 - Semester 22Z
 // Singly-linked list and circular SLL members implemented using recursion
 
 #include <iostream>
