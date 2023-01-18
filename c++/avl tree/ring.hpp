@@ -1,14 +1,12 @@
-/* corrected version */
 /* the header file ring.hpp */
-// EADS Lab2 - Eren Karadag
+
+#ifndef RING
+#define RING
 
 #include <iostream>
 #include <string>
 
 using namespace std;
-
-#ifndef RING
-#define RING
 
 template<typename Key, typename Info>
 class Ring {
