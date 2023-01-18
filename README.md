@@ -8,7 +8,7 @@ This repository contains personal and university projects using various programm
   - AVL tree
   
 - [8086 Assembly](https://github.com/darkquesh/degree-unlocker/tree/main/8086-assembly)
-  - Interesting numbers program - Primes & Fibonacci & Factorial & Squares and Square Roots
+  - Numbers program - Primes & Fibonacci & Factorial & Squares and Square Roots
 
 
 <br/>  
