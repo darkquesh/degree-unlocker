@@ -281,7 +281,7 @@ class Dictionary {      // AVL Tree
                 return r;
             }
             return r;
-        } // search
+        } // search ends
 
         // increaseOcc
         Node* increaseOcc(Node*& r, Key& k, unsigned int& infoVal) {
@@ -294,7 +294,7 @@ class Dictionary {      // AVL Tree
                 infoVal = r->info;
             }
             return r;
-        } // increaseOcc
+        } // increaseOcc ends
 
     public:
         Dictionary() { root = nullptr; }
