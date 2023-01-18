@@ -1,6 +1,6 @@
 # degree-unlocker
 
-This repository contains personal and universtiy projects using various programming languages  
+This repository contains personal and university projects using various programming languages  
 
 - [C++](https://github.com/darkquesh/degree-unlocker/tree/main/c%2B%2B)
   - Singly and doubly-linked list
