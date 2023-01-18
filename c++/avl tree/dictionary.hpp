@@ -1,5 +1,4 @@
 /* the header file dictionary.hpp */
-// EADS Lab Task#3 - Eren Karadag
 
 #ifndef DICTIONARY
 #define DICTIONARY

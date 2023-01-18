@@ -1,5 +1,4 @@
 /* the source file dictionary.cpp */
-// EADS Lab Task#3 - Eren Karadag
 
 #include "dictionary.hpp"
 
