@@ -202,19 +202,19 @@ CREDITS PROC
     xor BX, BX    ;page number = 0
     
     lea DX, me1
-	mov AH, 09h   ;Eren Karadag - 21947311
+	mov AH, 09h   ;
 	INT 21h 	
 	
 	lea DX, me2
-	mov AH, 09h   ;Hacettepe University EE
+	mov AH, 09h   ;
 	INT 21h
 	
 	lea DX, me3
-	mov AH, 09h   ;ELE338
+	mov AH, 09h   ;
 	INT 21h
 	
 	lea DX, me4
-	mov AH, 09h   ;21/22 Spring Term Project
+	mov AH, 09h   ;
 	INT 21h
 	
 	lea DX, press_any
