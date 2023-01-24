@@ -1,11 +1,12 @@
 /* the header file dictionary.hpp */
+// darkquesh - 24/01/23
 
 #ifndef DICTIONARY
 #define DICTIONARY
 
 #include <iostream>
 #include <fstream>      // for processing files (i/o)
-#include "ring.hpp"     // custom library for the external function Ring<int, string> Listing(const Dictionary<string, int>&)
+//#include "ring.hpp"     // custom library for the external function Ring<int, string> Listing(const Dictionary<string, int>&)
 //#include <type_traits>  // for comparing template types, used in checkKey()
 
 using namespace std;
@@ -33,6 +34,11 @@ class Dictionary {      // AVL Tree
         short int height (Node*& r);
         unsigned int nodeCount = 0;
         //bool checkKey() const;
+        void removeAll(Node*& r);
+        short int getBalanceFactor(Node*& r);
+        void updateNodeByKey(Node*& r, const Key& k, Info i);
+        void increaseOcc(Node*& r, Key& k, unsigned int& infoVal);
+        void getCount(Node*& r);
 
         // insertNode
         Node* insertNode(Node*& r, const Key& k, const Info& i) {
@@ -47,7 +53,7 @@ class Dictionary {      // AVL Tree
                 r->right = insertNode(r->right, k, i);
             else {
                 if (!didCounterExec)    // if the external function Counter is not executed, print error prompt
-                    cerr << "Specified node with key: " << k << " and info: " << i << " already exists!" << endl;
+                    cerr << "Specified node with key: " << k << " and info: " << i << " already exists! Please enter another item." << endl;
                 return r;
             }
 
@@ -115,9 +121,9 @@ class Dictionary {      // AVL Tree
         } // sketch ends
 
         // removeNode
-        Node* removeNode(Node*& r, const Key& k, const Info& i) {
+        Node* removeNode(Node*& r, const Key& k) {
             if (!r) {
-                cerr << "The tree is empty!" << endl;
+                //cerr << "The tree is empty!" << endl;
                 return r;
             }
             
@@ -126,14 +132,14 @@ class Dictionary {      // AVL Tree
             
             if (k < r->key) {
                 parent = r;
-                r->left = removeNode(r->left, k, i);
+                r->left = removeNode(r->left, k);
             }
             else if (k > r->key) {
                 parent = r;
-                r->right = removeNode(r->right, k, i);
+                r->right = removeNode(r->right, k);
             }
 
-            else if (k == r->key && i == r->info) {
+            else if (k == r->key) {
                 if (!r->left || !r->right) {        // Leaf node or node with only 1 child
                     Node* subtree = r->left ? r->left : r->right;       
 
@@ -159,19 +165,16 @@ class Dictionary {      // AVL Tree
 
                     r->key = r_min->key;
                     r->info = r_min->info;
-                    r->right = removeNode(r->right, r->key, r->info);
+                    r->right = removeNode(r->right, r->key);
                 }
             }
 
             if (!found && (r == root)) 
-                cerr << "Specified node with key: '" << k << "' and info: '" << i << "' does not exist!" << endl;
+                cerr << "Specified node with key: '" << k << "' does not exist! Please change the key." << endl;
             
             r = balanceTree(r);
             return r;
         } // removeNode ends
-
-        void removeAll(Node*& r);
-        short int getBalanceFactor(Node*& r);
         
         // rotate
         Node* rotate(Node*& r, const char* rot) {    // rot value should be "l" or "r"
@@ -204,7 +207,7 @@ class Dictionary {      // AVL Tree
                 return tmp;
             }
             else {
-                cerr << "Not a valid rotation, select 'l' or 'r'!" << endl;
+                cerr << "Not a valid rotation, please select 'l' or 'r'!" << endl;
                 return r;
             }
         } // rotate ends
@@ -245,62 +248,30 @@ class Dictionary {      // AVL Tree
             return copied;
         } // copyNodes ends
 
-        // getCount
-        void getCount(Node*& r) {
-            if (!r) return;
-
-            getCount(r->left);
-            getCount(r->right);
-            nodeCount++;
-        } // getCount ends
-
-        // updateNode
-        Node* updateNodeByKey(Node*& r, const Key& k, Info i) {
-            if (!r) return r;
-
-            if (k < r->key)
-                r->left = updateNodeByKey(r->left, k, i);
-            else if (k > r->key)
-                r->right = updateNodeByKey(r->right, k, i);
-            else if (k == r->key)
-                r->info = i;
-            return r;
-        } // updateNode ends
-
         // search
-        Node* search (Node*& r, const Key& k, bool& found) {
+        Node* search (Node*& r, const Key& k, bool& found, Node*& nodeFound) {
             found = false;
             if (!r) return r;
 
             if (k < r->key)
-                r->left = search(r->left, k, found);
+                r->left = search(r->left, k, found, nodeFound);
             else if (k > r->key)
-                r->right = search(r->right, k, found);
+                r->right = search(r->right, k, found, nodeFound);
             else if (k == r->key) {
                 found = true;
+                if (!didCounterExec)
+                    cout << "The node with key: '" << r->key << "' and info: '" << r->info << "' has been found!" << endl;
+                nodeFound = r;
                 return r;
             }
             return r;
         } // search ends
 
-        // increaseOcc
-        Node* increaseOcc(Node*& r, Key& k, unsigned int& infoVal) {
-            if (k < r->key)
-                r->left = increaseOcc(r->left, k, infoVal);
-            else if (k > r->key)
-                r->right = increaseOcc(r->right, k, infoVal);
-            else if (k == r->key) {
-                r->info++;
-                infoVal = r->info;
-            }
-            return r;
-        } // increaseOcc ends
-
     public:
         Dictionary() { root = nullptr; }
         ~Dictionary() { removeAll(); }
         void insertNode(const Key& k, const Info& i);
-        void removeNode(const Key& k, const Info& i);
+        void removeNode(const Key& k);
         void removeAll();
         void print(string tr = "in");       // default: in-order traversal
         void sketch();
@@ -334,10 +305,10 @@ void Dictionary<Key, Info>::sketch() {
 }
 
 template <typename Key, typename Info>
-void Dictionary<Key, Info>::removeNode(const Key& k, const Info& i) {
-    removeNode(root, k, i);
+void Dictionary<Key, Info>::removeNode(const Key& k) {
+    removeNode(root, k);
     if (found) 
-        cout << "The node with key: '" << k << "' and info: '" << i << "' is removed" << endl;
+        cout << "The node with key: '" << k << "' is removed" << endl;
 }
 
 template <typename Key, typename Info>
@@ -377,6 +348,15 @@ Dictionary<Key, Info>& Dictionary<Key, Info>::operator=(const Dictionary<Key, In
 }
 
 template <typename Key, typename Info>
+void Dictionary<Key, Info>::getCount(Node*& r) {
+    if (!r) return;
+
+    getCount(r->left);
+    getCount(r->right);
+    nodeCount++;
+}
+
+template <typename Key, typename Info>
 void Dictionary<Key, Info>::getCount() {
     getCount(root);
     cout << "There are " << nodeCount << (didCounterExec ? " words." : " nodes.") << endl; 
@@ -384,14 +364,47 @@ void Dictionary<Key, Info>::getCount() {
 
 template <typename Key, typename Info>
 bool Dictionary<Key, Info>::search(const Key& k) {
+    Node* nodeFound = nullptr;
     bool found = false;
-    search(root, k, found);
+    search(root, k, found, nodeFound);
+    if (!found && !didCounterExec) cerr << "Specified node with key '" << k << "' was not found! Please change the key." << endl;
     return found;
+}
+
+template <typename Key, typename Info>
+void Dictionary<Key, Info>::updateNodeByKey(Node*& r, const Key& k, Info i) {
+    bool found = false;
+    didCounterExec = true;      // to not to trigger the error prompt in search()
+
+    Node* nodeFound = nullptr;
+    search(r, k, found, nodeFound);
+
+    if (found)                  // if the node is found
+        nodeFound->info = i;    // change its info
+    else
+        cerr << "The node with key '" << k << "' does not exist, please change the value!" << endl;
+
+    didCounterExec = false;     // reset val
 }
 
 template <typename Key, typename Info>
 void Dictionary<Key, Info>::updateNodeByKey(const Key& k, Info i) {
     updateNodeByKey(root, k, i);
+}
+
+template <typename Key, typename Info>
+void Dictionary<Key, Info>::increaseOcc(Node*& r, Key& k, unsigned int& infoVal) {
+    bool found = false;
+
+    Node* nodeFound = nullptr;
+    search(r, k, found, nodeFound);
+
+    if (found) {                  // if the node is found
+        nodeFound->info++;    // change its info
+        infoVal = nodeFound->info;
+    }
+    else
+        cerr << "Cannot increaseOcc, the node with key '" << k << "' does not exist, please change the value!" << endl;
 }
 
 template <typename Key, typename Info>
@@ -462,13 +475,13 @@ Dictionary<string, int> Counter(const string& filename)     // case insensitive 
 // ordered by the word occurrence count, moreover words with the same counter
 // should be ordered lexically within the listing
 
-Ring<int, string> Listing(const Dictionary<string, int>& dict)  // !!! NOT complete !!!!
+/*Ring<int, string> Listing(const Dictionary<string, int>& dict)  // !!! NOT complete !!!!
 {
     Ring<int, string> ring;
 
 
     return ring;
-}
+}*/
 
 
 #endif

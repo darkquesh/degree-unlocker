@@ -1,4 +1,5 @@
 /* the source file dictionary.cpp */
+// darkquesh - 24/01/23
 
 #include "dictionary.hpp"
 
@@ -32,6 +33,8 @@ int main()
     cout << "Post-order Traversal: " << endl;
     tree.print("post"); cout << endl;
 
+/*-------------------------------------------*/ 
+
 /*-------------------------------------------*/
 
     /* Drawing tree */
@@ -49,8 +52,19 @@ int main()
     cout << "-- Updating node with key '7' --" << endl;
     tree.updateNodeByKey(7, "baby");
     tree.sketch(); cout << endl;
+    cout << "-- Updating a non-existing node --" << endl;
+    tree.updateNodeByKey(54, "test123"); cout << endl;
 
 /*-------------------------------------------*/   
+
+/*-------------------------------------------*/  
+
+    /* Search an item in tree*/
+    cout << "-- Node search --" << endl;
+    tree.search(5);                     // exists
+    tree.search(31); cout << endl;      // does not exist, error!
+
+/*-------------------------------------------*/  
 
 /*-------------------------------------------*/
 
@@ -59,6 +73,12 @@ int main()
     tree.insertNode(8, "os");
     cout << "**Tree**" << endl;
     tree.sketch(); cout << endl;
+
+    // Insert a node which already exists
+    cout << "-- Inserting a node which already exists --" << endl;
+    tree.insertNode(8, "os"); cout << endl;
+
+/*-------------------------------------------*/ 
 
 /*-------------------------------------------*/
 
@@ -71,29 +91,37 @@ int main()
 
 /*-------------------------------------------*/
 
+/*-------------------------------------------*/
+
     /* Node removal */
     // Removing a leaf node
     cout << "-- Removing a leaf node: --" << endl;
-    tree.removeNode(4, "eads");
+    tree.removeNode(4);
     cout << "**Tree**" << endl;
     tree.sketch(); cout << endl;
 
     // Removing a node with one child
     cout << "-- Removing node with only 1 child: --" << endl; //tree.insertNode(4, "eads");  // re-insert node
-    tree.removeNode(2, "asd");
+    tree.removeNode(2);
     tree.sketch(); cout << endl;
 
     // Removing a node with 2 children
     cout << "-- Removing node with 2 children: --" << endl; //tree.insertNode(2, "asd");   // re-insert node
-    tree.removeNode(8, "os");
+    tree.removeNode(8);
     tree.sketch(); cout << endl;
 
     // Removing the root node
     cout << "-- Removing the root node: --" << endl; //tree.insertNode(8, "os");   // re-insert node
-    tree.removeNode(5, "hey");
+    tree.removeNode(5);
     tree.sketch(); cout << endl;
 
+    // Removing a node which does not exist
+    cout << "-- Removing a node which does not exist: --" << endl;
+    tree.removeNode(69); cout << endl;
+
 /*-------------------------------------------*/
+
+/*-------------------------------------------*/ 
 
     /* Remove all nodes */
     cout << "-- Removing all nodes from tree --" << endl;
@@ -105,6 +133,8 @@ int main()
 
 /*-------------------------------------------*/    
 
+/*-------------------------------------------*/ 
+
     /* Creating a tree object whose key is not a number */
     Dictionary<string, string> tree3;
     cout << "Dictionary<string, string> tree3: " << endl;
@@ -115,6 +145,8 @@ int main()
     tree3.sketch(); cout << endl;
 
 /*-------------------------------------------*/
+
+/*-------------------------------------------*/ 
 
     /* External function - Counter */
     Dictionary<string, int> tree4;
@@ -135,6 +167,7 @@ int main()
     cout << "**Tree5**" << endl;
    // tree5.print(); cout << endl;      // --uncomment this line to proceed testing--
    // tree5.sketch(); cout << endl;       // --uncomment this line to proceed testing--
+    cout << "-- The total word count of the book 'On the Origin of Species' by Charles Darwin: --" << endl;
     tree5.getCount(); cout << endl;
 
 
