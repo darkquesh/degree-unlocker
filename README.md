@@ -4,7 +4,7 @@ This repository contains personal and university projects using various programm
 
 - [C++](https://github.com/darkquesh/degree-unlocker/tree/main/c%2B%2B)
   - Singly and doubly-linked list
-  - Circular doubly-linked list
+  - Circular doubly-linked list with custom iterator
   - AVL tree
   
 - [8086 Assembly](https://github.com/darkquesh/degree-unlocker/tree/main/8086-assembly)
