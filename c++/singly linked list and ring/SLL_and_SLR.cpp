@@ -1,4 +1,5 @@
-// Singly-linked list and circular SLL members implemented using recursion
+// Singly-linked list and circular SLL are implemented using recursion
+// 02/2023
 
 #include <iostream>
 
@@ -113,13 +114,14 @@ class SLR {
             int data;
         };
 
-    Node* head = nullptr;
+    Node* head;
     
-    void remove(Node*& cur, int what);
+    bool removeKeys(Node*& cur, int what);
 
     public:
+		SLR() {head = nullptr;}
         void insert(int what);
-        void remove(int what);
+        void removeKeys(int what);
         void print() const;
 };
 
@@ -155,36 +157,40 @@ void SLR::print() const {
     cout << endl;
 }
 
-void SLR::remove(Node*& cur, int what) {
+bool SLR::removeKeys(Node*& cur, int what) {
+    static bool found = false;
     static Node* tail = new Node();
     if (cur->next == head)
         tail = cur;
-    if (!cur || cur->next == head) return;
+    if (!cur || cur->next == head) return false;
     
-    remove(cur->next, what);
+    removeKeys(cur->next, what);
 
-    if (cur->next->data == what) {     
+    if (cur->next->data == what) {   
+        found = true;  
         Node* toDel = cur->next;
         if (cur->next->next == head) {      // last node to be removed
             delete toDel;
             cur->next = head;
-            return;
+            return found;
         }
         cur->next = cur->next->next;
         delete toDel;
-        return;
     }
     if (cur == head && cur->data == what) { // first node to be removed
+        found = true;
         Node* toDel = cur;
         tail->next = cur->next;
         delete toDel;
         head = tail->next;
-        return;
     }
+    
+    return found;
 }
 
-void SLR::remove(int what) {
-    return remove(head, what);
+void SLR::removeKeys(int what) {
+    if (!removeKeys(head, what))
+        cerr << "The specified key could not be found!" << endl;
 }
 
 int main()
@@ -213,9 +219,10 @@ int main()
     ring.insert(3);
     ring.insert(16);
     ring.insert(4);
-    ring.insert(99);
+    ring.insert(4);
+    ring.insert(52);
     ring.print();
 
-    ring.remove(3);
+    ring.removeKeys(4);
     ring.print();
 }
