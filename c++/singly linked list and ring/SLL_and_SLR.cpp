@@ -11,16 +11,15 @@ class SLL {
             Node* next;
             int data;
         };
-
     Node* head;
     
-    void removenLast(Node*& cur, int n);
+    bool removenLast(Node*& cur, int data, unsigned int n);
 
     public:
         SLL() {head = nullptr;}
         void insert(int what);
         void insertBefore(int chosen, int what);
-        void removenLast(int n);
+        void removenLast(int data, unsigned int n);
         void print() const;
 };
 
@@ -86,23 +85,27 @@ void SLL::insertBefore(int chosen, int what) {
     }
 }
 
-void SLL::removenLast(Node*& cur, int n) {
-    if (!cur) return;
-
-    removenLast(cur->next, n);
-
+bool SLL::removenLast(Node*& cur, int data, unsigned int n) {
+    static bool found = false;
     static int occ = 0;
+    if (!cur) return found;
 
-    if (occ < n) {
+    removenLast(cur->next, data, n);
+
+    if (cur->data == data && occ < n) {
         Node* toDel = cur;
         cur = cur->next;
         occ++;
         delete toDel;
+        found = true;
     }
+
+    return found;
 }
 
-void SLL::removenLast(int n) {
-    return removenLast(head, n);
+void SLL::removenLast(int data, unsigned int n) {
+    if (!removenLast(head, data, n))
+        cerr << "The specified value could not be removed! Change the value or occurrence (val=" << data << ", occ=" << n << ")" << endl;
 }
 
 /****************************************/
@@ -114,7 +117,6 @@ class SLR {
             Node* next;
             int data;
         };
-
     Node* head;
     
     bool removeKeys(Node*& cur, int what);
@@ -201,6 +203,8 @@ int main()
     list.insert(1);
     list.insert(2);
     list.insert(18);
+    list.insert(2);
+    list.insert(2);
     list.insert(7);
     list.print();
 
@@ -210,7 +214,7 @@ int main()
     list.insertBefore(1, 16);
     list.print();
     
-    list.removenLast(2);
+    list.removenLast(2, 2);
     list.print();
 
     /****/ cout << endl << "Ring: " << endl; /*****/
