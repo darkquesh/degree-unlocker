@@ -3,7 +3,7 @@
 This repository contains personal and university projects using various programming languages  
 
 - [C++](https://github.com/darkquesh/degree-unlocker/tree/main/c%2B%2B)
-  - Singly and doubly-linked list
+  - Singly-linked list and ring
   - Circular doubly-linked list with custom iterator
   - AVL tree
   
