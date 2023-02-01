@@ -12,11 +12,12 @@ class SLL {
             int data;
         };
 
-    Node* head = nullptr;
+    Node* head;
     
     void removenLast(Node*& cur, int n);
 
     public:
+        SLL() {head = nullptr;}
         void insert(int what);
         void insertBefore(int chosen, int what);
         void removenLast(int n);
@@ -119,7 +120,7 @@ class SLR {
     bool removeKeys(Node*& cur, int what);
 
     public:
-		SLR() {head = nullptr;}
+        SLR() {head = nullptr;}
         void insert(int what);
         void removeKeys(int what);
         void print() const;
